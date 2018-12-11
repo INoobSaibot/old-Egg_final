@@ -1,0 +1,285 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<style>
+
+    /* check out */
+.breadcrumb_checkout { 
+  list-style: none; 
+  overflow: hidden; 
+  margin: 40px;
+  padding: 0;
+}
+.breadcrumb_checkout li { 
+  float: left; 
+}
+.breadcrumb_checkout li a {
+  color: white;
+  text-decoration: none; 
+  padding: 8px 0 8px 55px;
+  background: brown; /* fallback color */
+  background-color: #60ab59;
+  position: relative; 
+  display: block;
+  float: left;
+}
+@media (min-width: 768px) {
+.breadcrumb_checkout li a:after { 
+  content: " "; 
+  display: block; 
+  width: 0; 
+  height: 0;
+  border-top: 50px solid transparent;           /* Go big on the size, and let overflow hide */
+  border-bottom: 50px solid transparent;
+  border-left: 30px solid  #60ab5973;
+  position: absolute;
+  top: 50%;
+  margin-top: -50px; 
+  left: 100%;
+  z-index: 2; 
+}	
+.breadcrumb_checkout li a:before { 
+  content: " "; 
+  display: block; 
+  width: 0; 
+  height: 0;
+  border-top: 50px solid transparent;           /* Go big on the size, and let overflow hide */
+  border-bottom: 50px solid transparent;
+  border-left: 30px solid white;
+  position: absolute;
+  top: 50%;
+  margin-top: -50px; 
+  margin-left:0px;
+  left: 100%;
+  z-index: 1; 
+}	
+.breadcrumb_checkout li.active a:after 
+	{
+		content: " "; 
+  display: block; 
+  width: 0; 
+  height: 0;
+  border-top: 50px solid transparent;           /* Go big on the size, and let overflow hide */
+  border-bottom: 50px solid transparent;
+  border-left: 30px solid  #60ab59;
+  position: absolute;
+  top: 50%;
+  margin-top: -50px; 
+  left: 100%;
+  z-index: 2; 
+	}
+}
+.breadcrumb_checkout li:first-child a {
+  padding-left: 10px;
+}
+
+.breadcrumb_checkout li.active
+{
+	background:        #60ab59;
+	color: #fff;
+}
+.breadcrumb_checkout li a
+{
+	background:        #60ab5973;
+	color: #fff;
+}
+.breadcrumb_checkout li a:hover
+{
+	background:        #60ab5973;
+	color: #fff;
+}
+.breadcrumb_checkout li a:visited
+{
+	background:        #60ab5973;
+	color: #fff;
+}
+.breadcrumb_checkout li a:focus
+{
+	background:        #60ab5973;
+	color: #fff;
+}
+.breadcrumb_checkout>li.disabled>a:hover {
+	background:        #60ab5973;
+	color: #fff;
+	}
+	.breadcrumb_checkout>li.disabled>a:visited {
+	background:        #60ab5973;
+	color: #fff;
+	}
+	.breadcrumb_checkout>li.disabled>a:focus {
+	background:        #60ab5973;
+	color: #fff;
+	}
+
+</style>
+<br><br><br>
+
+        
+        <section>
+        <div class="wizard">
+        <div class="wizard-inner">
+        <!-- <div class="connecting-line"></div> -->
+        
+        <ul class="nav  breadcrumb_checkout" role="tablist">
+        <li role="presentation" class="active">
+        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Step 1">
+        <h3>Shipping</h3>
+        </a>
+        </li>
+        <li role="presentation" class="">
+        <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Step 2">
+        <h3>Payment</h3>
+        </a>
+        </li>
+        <li role="presentation" class="disabled">
+        <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Step 3">
+        <h3>Confirmations</h3>
+        </a>
+        
+    </li>
+        </ul>
+        
+        
+        </div>
+        <br>
+    </div>
+
+ 
+    
+<body>
+<div class="main main-raised">
+    <div class="row">
+        <div class="col-md-8 ml-auto mr-auto">
+    <h1>Shipping to: {{shippingAddress}}</h1>    
+    <h2>Choose your payment</h2>
+    {% if payment_list %}
+        <form action="completeOrder" method="post">
+
+        {% csrf_token %}
+        <div class="form-group" id="Which of your cards" name="Which of your cards">
+                <label>Pick Your Card</label>
+                <select name="Card Choice Field">
+        {% for payment in payment_list %}
+                    <option value="{{payment.id}}">Ends in: {{ payment.last4 }} -- 
+                        Exp: {{ payment.exp }} {{ payment.type }}</option>
+
+            <!--<li>card {{payment.name}} -- {{payment.last4}}<button name="{{payment.id}}" value={{payment.id}}>Use this payment Card</button></li><br>-->
+        {% endfor %}
+                </select>
+                
+                <label>Pick your shipping address</label>
+                <select name="Address List">                    
+        {% for address in addressList %}
+                    <option value="{{address.id}}">{{address.name}} -- {{address.address}}</option>
+
+        {% endfor %}
+                </select>
+                <button>Proceed to Checkout</button> {{order.getTotal}}
+        </div>
+    {% endif %}
+        <button type="submit" formaction="cardForm">Add different card</button><br><br>
+        <button type="submit" formaction="addressForm">Add Address</button>    
+    </form>
+    </div>
+    </div>
+    </section>
+    </div>
+  
+<br>
+<br>
+
+            
+    <div class="main main-raised">
+        <div class="row">
+            <div class="col-md-8 ml-auto mr-auto">
+                <!-- CREDIT CARD FORM STARTS HERE -->
+                <div class="panel panel-default credit-card-box">
+                    <div class="panel-heading display-table" >
+                        <div class="row display-tr" >
+                            <h3 class="panel-title display-td" >Payment Details</h3>
+                            <div class="display-td" >                            
+                                <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
+                            </div>
+                        </div>                    
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" id="payment-form" method="POST" action="javascript:void(0);">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label for="cardNumber">CARD NUMBER</label>
+                                        <div class="input-group">
+                                            <input 
+                                                type="tel"
+                                                class="form-control"
+                                                name="cardNumber"
+                                                placeholder="Valid Card Number"
+                                                autocomplete="cc-number"
+                                                required autofocus 
+                                            />
+                                            <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                        </div>
+                                    </div>                            
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-7 col-md-7">
+                                    <div class="form-group">
+                                        <label for="cardExpiry"><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label>
+                                        <input 
+                                            type="tel" 
+                                            class="form-control" 
+                                            name="cardExpiry"
+                                            placeholder="MM / YY"
+                                            autocomplete="cc-exp"
+                                            required 
+                                        />
+                                    </div>
+                                </div>
+                                <div class="col-xs-5 col-md-5 pull-right">
+                                    <div class="form-group">
+                                        <label for="cardCVC">CV CODE</label>
+                                        <input 
+                                            type="tel" 
+                                            class="form-control"
+                                            name="cardCVC"
+                                            placeholder="CVC"
+                                            autocomplete="cc-csc"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label for="couponCode">COUPON CODE</label>
+                                        <input type="text" class="form-control" name="couponCode" />
+                                    </div>
+                                </div>                        
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <button class="subscribe btn btn-success btn-lg btn-block" type="button">Place Order</button>
+                                </div>
+                            </div>
+                            <div class="row" style="display:none;">
+                                <div class="col-xs-12">
+                                    <p class="payment-errors"></p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>            
+                <!-- CREDIT CARD FORM ENDS HERE -->
+
+            
+        </div>
+    </div>
+    
+
+
+    </div>
+  </body>
+
+{% endblock %}

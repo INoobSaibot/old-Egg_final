@@ -1,0 +1,53 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Add Address</h1>
+
+       
+
+        {% csrf_token %}
+        
+<div class="card" style="width: 50%;margin-left: 25%; margin-top:10%;">
+    <div class="address">
+        <form action="addAddress" method=post>
+        {% csrf_token %}
+            <div class="form-group address_holder">
+                <label for="address_holder">Name of address</label>
+                <input type="text" class="form-control" name="address_name">
+            </div>
+            
+            <div class="form-group streetNameNumber">
+                <label for="streetNameNumber">Street Name and Number</label>
+                <input type="text" class="form-control" id="streetNameAndNumber" name="streetNameAndNumber">
+            </div>
+            
+            <div class="form-group" id="card-number-field">
+                <label for="City">City</label>
+                <input type="text" class="form-control" id="city" name="theCity">
+            </div>
+
+            <div class="form-group" id="state" name="state">
+                <label>State</label>
+                <select name="state">
+                    <Option value="01">Ohio</Option>
+                    <Option value="01">Virgina</Option>
+                    <option value="ca">California</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="add-now">
+
+            <div class="form-group" id="cardType" name="cardType">
+                
+            </div>
+
+                <button type="submit" class=btn btn-default id="confirm-address">Confirm</button>
+            </div>
+
+        </form>
+
+
+    </div>
+<div>
+
+{% endblock %}

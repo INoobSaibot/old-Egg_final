@@ -1,0 +1,69 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+        {% csrf_token %}
+
+    <div class="card" style="width: 50%;margin-left: 25%; margin-top:10%;">
+            <h1>Add Card</h1>
+        <form action="addPaymentCard" method=post>
+        {% csrf_token %}
+            <div class="form-group card_holder">
+                <label for="card_holder">Card Holder</label>
+                <input type="text" class="form-control" name="card_holder">
+            </div>
+            
+            <div class="form-group CVV">
+                <label for="cvv">CVV</label>
+                <input type="text" class="form-control" id="cvv" name="cvv">
+            </div>
+            
+            <div class="form-group" id="card-number-field">
+                <label for="cardNumber">Card Number</label>
+                <input type="text" class="form-control" id="cardNumber" name="cardNumber">
+            </div>
+
+            <div class="form-group" id="expiration-date" name="expiration_date">
+                <label>Expiration Date</label>
+                <select name="exp_month">
+                    <Option value="01">January</Option>
+                    <Option value="02">February</Option>
+                    <Option value="03">March</Option>
+                    <Option value="04">April</Option>
+                    <Option value="05">May</Option>
+                    <Option value="06">June</Option>
+                    <Option value="07">July</Option>
+                    <Option value="08">August</Option>
+                    <Option value="09">September</Option>
+                    <Option value="10">October</Option>
+                    <Option value="11">November</Option>
+                    <Option value="12">December</Option>
+                </select>
+            
+                <select name="exp_year">
+                    <option value="18">2018</option>
+                    <option value="19">2019</option>
+                    <option value="20">2020</option>
+                    <option value="21">2021</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="pay-now">
+
+            <div class="form-group" id="cardType" name="cardType">
+                <label>Pick Your Card Type</label>
+                <select name="Card Type Field">
+                        <Option value="01">Visa</Option>
+                        <Option value="02">Master Card</Option>
+                        <Option value="03">American Express</Option>
+                </select>
+            </div>
+
+                <button type="submit" class=btn btn-default id="confirm-card">Confirm</button>
+            </div>
+
+        </form>
+
+
+    </div>
+
+{% endblock %}

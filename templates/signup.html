@@ -1,0 +1,29 @@
+{% extends 'base_generic.html' %}
+
+
+
+{% block content %}
+
+<style>
+.form {
+    width: 300px;
+    border: 10px solid lightblue;
+    padding: 15px;
+    margin: 25px;
+    background-color: antiquewhite;
+    margin: auto;
+}
+</style>
+<br> <br>
+<br> <br>
+<br> <br>
+<br> <br>
+<div class="form">
+  <h2 style="color:lightblue">Sign up</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Sign up</button>
+  </form>
+</div>
+{% endblock %}

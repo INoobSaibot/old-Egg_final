@@ -1,0 +1,56 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+.products  {
+width: 40%;
+border: 5px solid rgba(255,0,255, 0.25);
+padding: 15px;
+margin: 25px;
+background-color: rgba(0,0,0, 0.3);
+margin: auto;
+  }
+
+</style>
+
+<style>
+  the-body-tag{
+    background-image: url({% static 'other_pics/electronics.jpg'%});
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: fixed;
+  }
+</style>
+<br><br><br><br>
+
+    <div class="section text-center">
+      
+       
+            <h2 class="title">Products</h2>
+
+  {% if product_list %}
+  <div class = "products">
+  <form action = "/products/addToCart" method="post">
+      {% csrf_token %}
+  <ul>
+    {% for product in product_list %}
+      <li style="list-style-type:none;">
+{% load static %}
+<div style="text-align:left;">
+<img src="{% static 'product_pictures/'%}{{product.pk}}.jpg" alt="failed to load {% static 'product_pictures/'%}{{product.pk}}.jpg" style="width: 80px; height:84px;">
+        <a href="{{ product.get_absolute_url }}"><h9 style="color:azure; font-size: 125%;">{{ product.name }}</h9></a>
+        </div>
+        <hr>
+        
+        <!--<button type="submit" name="name" id="choice -1">Add To Cart
+        </button><a href="{{ product.get_absolute_url }}">{{ product.name }}</a> ({{product.brand}})-->
+        
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no products avaialable for sale</p>
+  {% endif %}       
+{% endblock %}
+</form>

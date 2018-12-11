@@ -1,0 +1,260 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<style>
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+
+.price {
+  color: grey;
+  font-size: 22px;
+}
+
+.card button {
+  border: none;
+  outline: 0;
+  padding: 12px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+.card button:hover {
+  opacity: 0.7;
+}
+
+/* check out */
+.breadcrumb_checkout { 
+  list-style: none; 
+  overflow: hidden; 
+  margin: 40px;
+  padding: 0;
+}
+.breadcrumb_checkout li { 
+  float: left; 
+}
+.breadcrumb_checkout li a {
+  color: white;
+  text-decoration: none; 
+  padding: 8px 0 8px 55px;
+  background: brown; /* fallback color */
+  background-color: #60ab59;
+  position: relative; 
+  display: block;
+  float: left;
+}
+@media (min-width: 768px) {
+.breadcrumb_checkout li a:after { 
+  content: " "; 
+  display: block; 
+  width: 0; 
+  height: 0;
+  border-top: 50px solid transparent;           /* Go big on the size, and let overflow hide */
+  border-bottom: 50px solid transparent;
+  border-left: 30px solid  #60ab5973;
+  position: absolute;
+  top: 50%;
+  margin-top: -50px; 
+  left: 100%;
+  z-index: 2; 
+}	
+.breadcrumb_checkout li a:before { 
+  content: " "; 
+  display: block; 
+  width: 0; 
+  height: 0;
+  border-top: 50px solid transparent;           /* Go big on the size, and let overflow hide */
+  border-bottom: 50px solid transparent;
+  border-left: 30px solid white;
+  position: absolute;
+  top: 50%;
+  margin-top: -50px; 
+  margin-left:0px;
+  left: 100%;
+  z-index: 1; 
+}	
+.breadcrumb_checkout li.active a:after 
+	{
+		content: " "; 
+  display: block; 
+  width: 0; 
+  height: 0;
+  border-top: 50px solid transparent;           /* Go big on the size, and let overflow hide */
+  border-bottom: 50px solid transparent;
+  border-left: 30px solid  #60ab59;
+  position: absolute;
+  top: 50%;
+  margin-top: -50px; 
+  left: 100%;
+  z-index: 2; 
+	}
+}
+.breadcrumb_checkout li:first-child a {
+  padding-left: 10px;
+}
+
+.breadcrumb_checkout li.active
+{
+	background:        #60ab59;
+	color: #fff;
+}
+.breadcrumb_checkout li a
+{
+	background:        #60ab5973;
+	color: #fff;
+}
+.breadcrumb_checkout li a:hover
+{
+	background:        #60ab5973;
+	color: #fff;
+}
+.breadcrumb_checkout li a:visited
+{
+	background:        #60ab5973;
+	color: #fff;
+}
+.breadcrumb_checkout li a:focus
+{
+	background:        #60ab5973;
+	color: #fff;
+}
+.breadcrumb_checkout>li.disabled>a:hover {
+	background:        #60ab5973;
+	color: #fff;
+	}
+	.breadcrumb_checkout>li.disabled>a:visited {
+	background:        #60ab5973;
+	color: #fff;
+	}
+	.breadcrumb_checkout>li.disabled>a:focus {
+	background:        #60ab5973;
+	color: #fff;
+  }
+  .body{
+    background-color: lightgrey;
+    margin: right;
+  }
+
+</style>
+<br> <br> <br> <br>
+<!--
+<div class="main main-raised">
+    <div class="section text-center">
+      <div class="row">
+        <div class="col-md-8 ml-auto mr-auto">
+            <div class="container">
+                <div class="row">
+                <section class="body">
+                <div class="wizard">
+                <div class="wizard-inner">
+                <!-- <div class="connecting-line"></div> --
+                <ul class="nav  breadcrumb_checkout" role="tablist">
+                <li role="presentation" class="active">
+                <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Step 1">
+                <h3>Order</h3>
+                </a>
+                </li>
+                <li role="presentation" class="">
+                <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Step 2">
+                <!--<h3>Payment</h3>--
+                </a>
+                </li>
+                <li role="presentation" class="disabled">
+                <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Step 3">
+                <!--<h3>Confirmations</h3>--
+                </a>
+                </li>
+                </ul>
+                </div>
+              -->
+              
+  <form action = "/products/addToCart" method="post">
+    {% csrf_token %}
+    {% load static %}
+<!-- <link rel="stylesheet" href="{% static 'css/styles.css' %}"> -->
+<div style="margin-left:25%;"class="card">
+    <h1 style="align:center;">{{ product.name }}</h1>
+  <p><strong>Brand:</strong> <a href="">{{ product.brand }}</a></p>
+  <img src="{% static 'product_pictures/'%}{{product.pk}}.jpg" alt="failed to load {% static 'product_pictures/'%}{{product.pk}}.jpg" style="width: 200px; height:210px;"><!-- detail link not yet defined -->
+  <p><strong>Description:</strong> {{ product.description }}</p>
+  <p><strong>Item Number:</strong> {{ product.itemNumber }}</p> 
+  <p class="price"><strong>Price:</strong>{{ product.price }} </p>
+     
+  <button type="submit" name="choice" value="{{product.itemNumber}}">Add to Cart</button>
+  <p><strong>Category:</strong> {% for category in product.category.all %} {{ category }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>  
+</form>
+</div>
+</div>
+</section>
+  <div style="margin-left:20px;margin-top:20px">
+    
+<!--    <h4>Qoh: 99+</h4> -->
+
+
+<!--Test Cart!!! that allows quantities and repeats-->
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div class="section" style="background-color: rgba(0,0,0,0.25);
+   margin-top:-40%; margin-left:50%;width:40%;">   
+<h1 style="color:azure;">Your <i class="fa fa-shopping-cart" style="font-size:60px;color:red"></i> Contents:</h1>
+{% if testCart.itemsInCart %}
+<form action = "/products/removeFromTestCart" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="next" id="" value="{{request.path}}">
+
+  <!--<ul style="list-style-type:none;">-->
+    <table style="color:azure;margin-left:3%;">
+    <tr>
+      <th>Item</th>
+      <th>Quantity</th>
+      <th>Price</th>
+      <th>Line Total</th>
+    </tr>
+    {% for cartItem in testCart.itemsInCart.all %}
+    <tr class="cart">
+      <td><button class="button" type="submit" name="pk" id="{{forloop.counter}}" value={{cartItem.pk}}>X</button>{{cartItem.m}}</td>
+
+      <td><button class="button" type="submit" name="increase" value={{cartItem.pk}}>+</button>
+        <strong>{{cartItem.quantity}}</strong>
+        <button class="button" type="submit" name="decrease" value="{{cartItem.pk}}"> - </button>
+      </td>
+        <td>${{cartItem.getPrice}}</td>
+        <td style="text-align:right;">${{cartItem.getLineTotal}}</td>
+      </tr>
+    {% endfor %}
+    </table>
+</form>
+
+<h3 style="color:azure;">Cart Total: {{testCart.getTotal}}</h3>
+
+<form action="/products/order" method="post">
+  {% csrf_token %}
+<input class="button" type="submit" name="order" id="order" value="Order">
+
+</form>
+
+{% else %}
+  <h4 style="color:azure;">{{request.user}}'s Test Cart seems to be empty or missing!</h4>
+{% endif %}
+<br><br><br>
+
+</div>
+
+
+{% endblock %}
